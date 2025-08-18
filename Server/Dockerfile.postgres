@@ -1,0 +1,13 @@
+# Use PostgreSQL official image
+FROM postgres:15-alpine
+
+# Set environment variables
+ENV POSTGRES_DB=InventoryWebapp
+ENV POSTGRES_USER=postgres
+ENV POSTGRES_PASSWORD=password
+
+# Create init script to set up the database
+COPY init.sql /docker-entrypoint-initdb.d/
+
+# Expose PostgreSQL port
+EXPOSE 5432

@@ -1,0 +1,57 @@
+ version: '3.9'
+
+ services:
+   # Spring Boot Backend
+   spring-backend:
+     image: spring-backend
+     container_name: InventoryWeb-backend
+     build:
+       context: ./Server
+       dockerfile: Dockerfile
+     ports:
+       - "8080:8081"
+     depends_on:
+       - db
+     environment:
+       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/InventoryWebapp
+       SPRING_DATASOURCE_USERNAME: postgres
+       SPRING_DATASOURCE_PASSWORD: password
+     networks:
+       - InventoryWeb-network
+
+   # React Frontend
+   # react-app:
+   #   image: react-frontend
+   #   container_name: InventoryWeb-frontend
+   #   build:
+   #     context: ./Client
+   #     dockerfile: Dockerfile
+   #   ports:
+   #     - "3000:3000"
+   #   volumes:
+   #     - ./Client:/usr/src/app
+   #     - /usr/src/app/node_modules
+   #   networks:
+   #     - InventoryWeb-network
+
+   # PostgreSQL Database
+   db:
+     image: postgres:15-alpine
+     container_name: InventoryWeb-database
+     environment:
+       POSTGRES_USER: postgres
+       POSTGRES_PASSWORD: password
+       POSTGRES_DB: InventoryWebapp
+     ports:
+       - "5433:5432"  # Use different external port to avoid conflict
+     volumes:
+       - db_data:/var/lib/postgresql/data
+     networks:
+       - InventoryWeb-network
+
+ networks:
+   InventoryWeb-network:
+     driver: bridge
+
+ volumes:
+   db_data:
