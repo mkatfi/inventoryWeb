@@ -22,7 +22,6 @@ public class SupplierController {
         return ResponseEntity.ok(supplierService.addSupplier(supplierDTO));
     }
 
-
     @GetMapping("/all")
     public ResponseEntity<Response> getAllSuppliers() {
         return ResponseEntity.ok(supplierService.getAllSupplier());
